@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using BestApplication.Data;
 using BestApplication.Models;
 using BestApplication.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BestApplication
 {
@@ -47,7 +48,11 @@ namespace BestApplication
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.SslPort = 44365;
+                options.Filters.Add(new RequireHttpsAttribute());
+            });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -76,7 +81,17 @@ namespace BestApplication
             app.UseIdentity();
 
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
-
+            app.UseGoogleAuthentication(new GoogleOptions()
+            {
+                ClientId = Configuration["Authentication:Google:ClientId"],
+                ClientSecret = Configuration["Authentication:Google:ClientSecret"]
+            });
+            app.UseFacebookAuthentication(new FacebookOptions()
+            {
+                AppId = Configuration["Authentication:Facebook:AppId"],
+                AppSecret = Configuration["Authentication:Facebook:AppSecret"]
+            });
+      
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

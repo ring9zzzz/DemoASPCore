@@ -12,6 +12,9 @@ using Microsoft.Extensions.Options;
 using BestApplication.Models;
 using BestApplication.Models.AccountViewModels;
 using BestApplication.Services;
+using BestApplication.Common.Const;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace BestApplication.Controllers
 {
@@ -24,6 +27,7 @@ namespace BestApplication.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+        public IConfigurationRoot _configuration { get; }
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -31,13 +35,15 @@ namespace BestApplication.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            IConfigurationRoot configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
+            _configuration = configuration;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -219,6 +225,12 @@ namespace BestApplication.Controllers
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);
+                    var checkExist = _userManager.GetRolesAsync(user);
+                    if (checkExist.Result.Count > 0)
+                    {
+                        ClearUserRole(user.Id);
+                    }
+                    result = await _userManager.AddToRoleAsync(user,UserRoleCst.FreeUser);
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
@@ -448,12 +460,13 @@ namespace BestApplication.Controllers
         [HttpGet]
         public IActionResult AccessDenied()
         {
+            ViewData["Message"] = "Bạn không có quyền truy cập trang này";
             return View();
         }
 
         #region Helpers
 
-        private void AddErrors(IdentityResult result)
+        public void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
             {
@@ -461,7 +474,14 @@ namespace BestApplication.Controllers
             }
         }
 
-        private IActionResult RedirectToLocal(string returnUrl)
+
+        public async void ClearUserRole(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);     
+               await _userManager.RemoveFromRoleAsync(user, user.Roles.FirstOrDefault().RoleId);        
+        }
+
+        public IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
             {
