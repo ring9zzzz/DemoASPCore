@@ -43,6 +43,8 @@ namespace BestApplication
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<StoreOfficeContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("StoreConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
             {
