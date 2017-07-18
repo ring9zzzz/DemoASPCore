@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BestApplication", "BestApplication\BestApplication.csproj", "{FF074FB9-3902-470B-A6B5-D8A5BAA43DAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BestApplication.Common", "BestApplication.Common\BestApplication.Common.csproj", "{2EF99ACD-3FDC-47CC-B372-1F07C0529943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BestApplication.Common", "BestApplication.Common\BestApplication.Common.csproj", "{2EF99ACD-3FDC-47CC-B372-1F07C0529943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

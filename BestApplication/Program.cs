@@ -18,7 +18,6 @@ namespace BestApplication
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseApplicationInsights()
                 .UseConfiguration(a)
                 .Build();
 

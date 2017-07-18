@@ -1,5 +1,4 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -8,10 +7,12 @@
 
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/bootstrap-social.css" />
+        <link rel="stylesheet" href="~/css/docs.css" />
+        <link rel="stylesheet" href="~/css/font-awesome.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/style.css">
         <link rel="stylesheet" href="~/css/AdminLTE.css">
-        <link rel="stylesheet" href="~/css/slider.css">
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -21,7 +22,6 @@
         <link rel="stylesheet" href="~/css/style.css">
         <link rel="stylesheet" href="~/css/AdminLTE.css">
     </environment>
-    @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
 <body>
     @await Html.PartialAsync("_Header")
@@ -37,6 +37,9 @@
     <a href="#" id="toTop"><span id="toTopHover"> </span></a>
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script type="text/javascript">
+
+
+
         $(document).ready(function () {
             $().UItoTop({ easingType: 'easeOutQuart' });
 
@@ -66,7 +69,30 @@
             });
 
         });
-
+          // Activate Carousel
+    $("#myCarousel").carousel();
+    
+    // Enable Carousel Indicators
+    $(".item1").click(function(){
+        $("#myCarousel").carousel(0);
+    });
+    $(".item2").click(function(){
+        $("#myCarousel").carousel(1);
+    });
+    $(".item3").click(function(){
+        $("#myCarousel").carousel(2);
+    });
+    $(".item4").click(function(){
+        $("#myCarousel").carousel(3);
+    });
+    
+    // Enable Carousel Controls
+    $(".left").click(function(){
+        $("#myCarousel").carousel("prev");
+    });
+    $(".right").click(function(){
+        $("#myCarousel").carousel("next");
+    });
     </script>
     @RenderSection("Scripts", required: false)
 </body>

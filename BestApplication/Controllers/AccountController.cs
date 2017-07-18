@@ -48,6 +48,7 @@ namespace BestApplication.Controllers
         //
         // GET: /Account/Login
         [HttpGet]
+        [Route("dang-nhap")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
@@ -55,6 +56,7 @@ namespace BestApplication.Controllers
             await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
 
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["TitleContent"] = "Đăng nhập";
             return View();
         }
 
@@ -66,6 +68,7 @@ namespace BestApplication.Controllers
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            ViewData["TitleContent"] = "Đăng nhập";
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -153,9 +156,11 @@ namespace BestApplication.Controllers
         }
 
         //
+
+   
         // POST: /Account/Logout
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
+        [Route("dang-xuat")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -233,7 +238,7 @@ namespace BestApplication.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, EmailConfirmed = true };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
