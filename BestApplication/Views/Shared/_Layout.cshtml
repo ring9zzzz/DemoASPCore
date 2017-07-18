@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="~/css/site.css" />
         <link rel="stylesheet" href="~/css/style.css">
         <link rel="stylesheet" href="~/css/AdminLTE.css">
+        <link rel="stylesheet" href="~/css/easy-responsive-tabs.css">
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -21,6 +22,9 @@
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/style.css">
         <link rel="stylesheet" href="~/css/AdminLTE.css">
+        <link rel="stylesheet" href="~/css/easy-responsive-tabs.css">
+        <link rel="stylesheet" href="~/css/bootstrap-social.css" />
+        <link rel="stylesheet" href="~/css/docs.css" />
     </environment>
 </head>
 <body>
@@ -42,6 +46,11 @@
 
         $(document).ready(function () {
             $().UItoTop({ easingType: 'easeOutQuart' });
+            $('#horizontalTab').easyResponsiveTabs({
+                type: 'default', //Types: default, vertical, accordion
+                width: 'auto', //auto or any width like 600px
+                fit: true   // 100% fit in a container
+            });
 
         });
         function DropDown(el) {

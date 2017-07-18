@@ -1,7 +1,43 @@
-
-@{
-    ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "Sản phẩm";
 }
+<div class="content_top col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <div class="heading">
+        <h3>Sản phẩm</h3>
+    </div>
+    <div class="see">
+        <p><a href="#">Tìm kiếm sản phẩm</a></p>
+    </div>
+    <div class="clear"></div>
+</div>
+<div class="grid_1_of_4 images_1_of_4 col-xs-12 col-sm-12 col-md-3 col-lg-3">
+    <a href="san-pham/2"><img src="@Url.Content("~/images/feature-pic1.jpg")" alt="" /></a>
+    <h2>Lorem Ipsum is simply </h2>
+    <div class="price-details">
+        <div class="price-number">
+            <p><span class="rupees">1.620.000 VNĐ</span></p>
+        </div>
+        <div class="add-cart">
+            <h4><a href="san-pham/2">Đặt sản phẩm</a></h4>
+        </div>
+        <div class="clear"></div>
+    </div>
 
-<h2>Index</h2>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('.rupees').each(function () {
+                if ($(this).text().length > 10) {
+                    $(this).css("fontSize", "1.1em");
+                }
+                else if ($(this).text().length > 9){
+                    $(this).css("fontSize", "1.3em");
+                }
+            });
+
+        })
+    </script>
+}
 

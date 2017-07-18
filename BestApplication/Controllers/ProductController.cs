@@ -9,13 +9,17 @@ namespace BestApplication.Controllers
 {
     public class ProductController : Controller
     {
-        // GET: Product
+        // GET: san-pham
+        [HttpGet]
+        [Route("san-pham")]
         public IActionResult Index()
         {
             return View();
         }
 
-        // GET: Product/Details/5
+        // GET: san-pham/id
+        [HttpGet]
+        [Route("san-pham/{id?}")]
         public IActionResult Details(int id)
         {
             return View();
