@@ -1,4 +1,6 @@
-﻿<div class="header">
+﻿@using BestApplication.Common.Const
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<div class="header">
     <div class="headertop_desc header-fixed">
         <div class="call">
             <p><span>Cần giúp đỡ?</span> hãy gọi chúng tôi <span class="number">0974-170-730</span></p>
@@ -7,15 +9,25 @@
             <ul>
                 @if (User.Identity.IsAuthenticated)
                 {
+                    //var Role = UserManager.GetRolesAsync(UserManager.GetUserAsync(this.User).Result).Result;
+                    if (@HttpContextAccessor.HttpContext.User.IsInRole(UserRoleCst.Admin))
+                    {
+                        <li><a href="/them-moi-san-pham">Thêm mới sản phẩm</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="/dat-hang">Đặt hàng</a></li>
+                        <li><a href="/thanh-toan">Thanh toán</a></li>
+                    }
                     <li><a href="/thong-tin-tai-khoan">Thông tin tài khoản</a></li>
                 }
+
                 else
                 {
                     <li><a href="/dang-ky-dich-vu">Đăng ký</a></li>
-                        <li><a href="/dang-nhap">Đăng nhập</a></li>
-                }           
-                <li><a href="/dat-hang">Đặt hàng</a></li>
-                <li><a href="/thanh-toan">Thanh toán</a></li>  
+                    <li><a href="/dang-nhap">Đăng nhập</a></li>
+                }
+             
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li><a href="/dang-xuat">Đăng xuất</a></li>
@@ -24,27 +36,27 @@
         </div>
 
     </div>
-    <div class="clear"></div>   
+    <div class="clear"></div>
     <div class="header_top">
         <div class="logo">
             <a href="/"><img src="@Url.Content("~/images/logo.png")" alt="" /></a>
         </div>
         @*<div class="cart">
-            <p>
-                Welcome to our Online Store! <span>Cart:</span><div id="dd" class="wrapper-dropdown-2">
-                    0 item(s) - $0.00
-                    <ul class="dropdown">
-                        <li>you have no items in your Shopping cart</li>
-                    </ul>
-                </div>
-            </p>
-        </div>*@
+                <p>
+                    Welcome to our Online Store! <span>Cart:</span><div id="dd" class="wrapper-dropdown-2">
+                        0 item(s) - $0.00
+                        <ul class="dropdown">
+                            <li>you have no items in your Shopping cart</li>
+                        </ul>
+                    </div>
+                </p>
+            </div>*@
         <div class="clear"></div>
         <div class="search_box col-xs-12 col-sm-12 hidden-md hidden-lg">
             <form>
-                <input type="text" value="Tìm kiếm"  onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Tìm kiếm';}"><input type="submit" value="">
+                <input type="text" value="Tìm kiếm" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Tìm kiếm';}"><input type="submit" value="">
             </form>
-        </div>  
+        </div>
         <div class="clear"></div>
     </div>
     <div class="header_bottom">
@@ -53,18 +65,18 @@
                 <a class="mobile-fix col-xs-12 col-sm-12" href="/">Trang chủ</a>
                 <a class="mobile-fix col-xs-12 col-sm-12" href="/san-pham">Sản phẩm</a>
                 <a class="mobile-fix col-xs-12 col-sm-12" href="/khuyen-mai">Khuyến mãi</a>
-                <a class="mobile-fix col-xs-12 col-sm-12" href="/lien-he">Liên hệ</a>           
+                <a class="mobile-fix col-xs-12 col-sm-12" href="/lien-he">Liên hệ</a>
             </div>
             <div class="search_box col-xs-12 col-sm-12 col-md-3 col-lg-3 hidden-xs hidden-sm">
                 <form>
                     <input type="text" value="Tìm kiếm" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Tìm kiếm';}"><input type="submit" value="">
                 </form>
-            </div>        
-        </div>       
+            </div>
+        </div>
     </div>
     <div class="clear"></div>
     <div id="myCarousel" class="carousel slide" data-ride="carousel" style="margin-top: 30px;
-    margin-bottom: 90px;"> 
+    margin-bottom: 90px;">
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
 
@@ -77,7 +89,7 @@
             </div>
 
             <div class="item">
-                <img src="~/images/slide-3-image.jpg"  width="460" height="345">
+                <img src="~/images/slide-3-image.jpg" width="460" height="345">
                 <div class="carousel-caption text-red">
                     <h3>Chania</h3>
                     <p>The atmosphere in Chania has a touch of Florence and Venice.</p>
@@ -85,13 +97,13 @@
             </div>
 
             <div class="item">
-                <img src="~/images/slide-2-image.jpg"  width="460" height="345">
+                <img src="~/images/slide-2-image.jpg" width="460" height="345">
                 <div class="carousel-caption text-red">
                     <h3>Flowers</h3>
                     <p>Beautiful flowers in Kolymbari, Crete.</p>
                 </div>
             </div>
-  
+
             <!-- Left and right controls -->
             <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" style="color:palevioletred"></span>

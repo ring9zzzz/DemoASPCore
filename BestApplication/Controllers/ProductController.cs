@@ -1,9 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BestApplication.Controllers
 {
@@ -22,12 +23,17 @@ namespace BestApplication.Controllers
         [Route("san-pham/{id?}")]
         public IActionResult Details(int id)
         {
+            ViewData["TitleContent"] = "Chi tiết sản phẩm "+ id +"";
             return View();
         }
 
-        // GET: Product/Create
-        public IActionResult Create()
+        // GET: them-moi-san-pham
+        [HttpGet]
+        [Route("them-moi-san-pham")]
+        [Authorize(Roles = "Admin")]
+        public IActionResult AddNew()
         {
+            ViewData["TitleContent"] = "Thêm mới sản phẩm";
             return View();
         }
 

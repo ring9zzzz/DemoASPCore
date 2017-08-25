@@ -13,6 +13,7 @@ using BestApplication.Data;
 using BestApplication.Models;
 using BestApplication.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace BestApplication
 {
@@ -52,7 +53,8 @@ namespace BestApplication
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
+            services.AddSession();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc(options =>
             {
                 options.SslPort = 44365;
@@ -81,7 +83,7 @@ namespace BestApplication
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            app.UseSession();
             app.UseStaticFiles();
 
             app.UseIdentity();

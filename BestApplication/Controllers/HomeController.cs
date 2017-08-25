@@ -37,10 +37,10 @@ namespace BestApplication.Controllers
 
 
         #region helper
-        private static string GetUserRole(ClaimsPrincipal User)
+        public static string GetUserRole(ClaimsPrincipal User)
         {        
-            return User.IsInRole(UserRoleCst.AdminName) == true ? UserRoleCst.AdminName :
-                 User.IsInRole(UserRoleCst.PreUserName) == true ? UserRoleCst.PreUserName :
+            return User.IsInRole(UserRoleCst.Admin) == true ? UserRoleCst.AdminName :
+                 User.IsInRole(UserRoleCst.PreUser) == true ? UserRoleCst.PreUserName :
                  UserRoleCst.FreeUserName;
         }
         #endregion
