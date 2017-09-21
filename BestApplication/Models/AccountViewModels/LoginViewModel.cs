@@ -8,11 +8,11 @@ namespace BestApplication.Models.AccountViewModels
 {
     public class LoginViewModel
     {
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage ="Vui lòng nhập email")]
+        [EmailAddress(ErrorMessage ="Vui lòng nhập đúng định dạng email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

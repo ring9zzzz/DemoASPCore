@@ -8,8 +8,8 @@ using BestApplication.Data;
 namespace BestApplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170706100513_MyProjectMigration")]
-    partial class MyProjectMigration
+    [Migration("20170921075818_AuthenticateMigration")]
+    partial class AuthenticateMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

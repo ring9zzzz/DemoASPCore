@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BestApplication.Migrations
 {
-    public partial class MyProjectMigration : Migration
+    public partial class AuthenticateMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
