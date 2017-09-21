@@ -16,6 +16,7 @@ namespace BestApplication.Controllers
         {          
             return View();
         }
+        [Route("lien-he")]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";    

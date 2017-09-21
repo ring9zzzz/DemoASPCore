@@ -14,26 +14,24 @@ using BestApplication.Models;
 using BestApplication.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-
+using BestApplication.Models.ConfigModels;
 namespace BestApplication
 {
     public class Startup
     {
+
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("socialsetting.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets<Startup>();
-            }
-
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+            var options = new SocialAccountModel();
+            Configuration.GetSection("Authentication").Bind(options);
         }
 
         public IConfigurationRoot Configuration { get; }
@@ -91,13 +89,13 @@ namespace BestApplication
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
             app.UseGoogleAuthentication(new GoogleOptions()
             {
-                ClientId = Configuration["Authentication:Google:ClientId"],
-                ClientSecret = Configuration["Authentication:Google:ClientSecret"]
+                ClientId = Configuration["GoogleId"],
+                ClientSecret = Configuration["GoogleSecret"]
             });
             app.UseFacebookAuthentication(new FacebookOptions()
             {
-                AppId = Configuration["Authentication:Facebook:AppId"],
-                AppSecret = Configuration["Authentication:Facebook:AppSecret"]
+                AppId = Configuration["FacebookId"],
+                AppSecret = Configuration["FacebookSecret"]
             });
       
             app.UseMvc(routes =>
