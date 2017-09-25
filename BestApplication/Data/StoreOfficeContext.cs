@@ -5,7 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata;
 namespace BestApplication.Data
 {
     public partial class StoreOfficeContext : DbContext
-    {
+    {     
+        public StoreOfficeContext(DbContextOptions<StoreOfficeContext> options)
+            : base(options)
+        {
+            Database.EnsureCreated();
+        }
         public virtual DbSet<Categories> Categories { get; set; }
         public virtual DbSet<Guarantees> Guarantees { get; set; }
         public virtual DbSet<Manufacturers> Manufacturers { get; set; }

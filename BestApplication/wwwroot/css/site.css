@@ -66,7 +66,7 @@ textarea {
     position: relative;
     border: 1px solid #dfdfdf;
     display: none;
-    left:-15px
+    left: -15px
 }
 
 /*
@@ -86,7 +86,9 @@ textarea {
 /*Next/prev buttons*/
 
 
-}#products .next, #products .prev {
+}
+
+#products .next, #products .prev {
     position: absolute;
     top: 127px;
     left: 5px;
@@ -168,9 +170,11 @@ textarea {
             font-family: 'ambleregular';
             color: #CD1F25;
         }
+
     #products .slides_container {
         width: 109%;
     }
+
     .slides_container a {
         width: 290px;
     }
@@ -201,9 +205,11 @@ textarea {
             font-family: 'ambleregular';
             color: #CD1F25;
         }
+
     #products .slides_container {
         width: 109%;
     }
+
     .slides_container a {
         width: 250px;
     }
@@ -215,29 +221,31 @@ textarea {
 
 @media only screen and (max-width: 480px) {
     .span_3_of_2 p {
-        font-size: 20px!important;
+        font-size: 20px !important;
     }
+
     .grid_1_of_4 {
-        width: 100%!important;
-    } 
+        width: 100% !important;
+    }
+
     .price p {
-        font-size: 20px!important;
+        font-size: 20px !important;
         padding: 20px 0;
         color: #666;
         vertical-align: top;
     }
 
         .price p span {
-            font-size: 30px!important;
+            font-size: 30px !important;
             font-family: 'ambleregular';
             color: #CD1F25;
-            
         }
 
     #products .slides_container {
-    width:110%;
-    
-    } .slides_container a {
+        width: 110%;
+    }
+
+    .slides_container a {
         width: 320px;
         padding-top: 0;
     }
@@ -250,31 +258,38 @@ textarea {
         margin: 2px 6.6px;
     }
 }
-.margin-top-10 {
-    margin-top:10px !important;
 
+.margin-top-10 {
+    margin-top: 10px !important;
 }
+
+
 @media only screen and (max-width:320px) {
     .price p {
-        font-size: 20px!important;
+        font-size: 20px !important;
         padding: 20px 0;
         color: #666;
         vertical-align: top;
     }
+
     .grid_1_of_4 {
-        width: 100%!important;
-    } 
+        width: 100% !important;
+    }
+
     .price p span {
         font-size: 25px !important;
         font-family: 'ambleregular';
         color: #CD1F25;
     }
+
     .span_3_of_2 p {
-        font-size: 20px!important;
+        font-size: 20px !important;
     }
+
     #products .slides_container {
         width: 109%;
     }
+
     #products .next {
         left: 255px;
     }
@@ -304,4 +319,3 @@ textarea {
             width: 69px;
         }
 }
-

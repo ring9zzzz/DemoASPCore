@@ -15,6 +15,11 @@ using BestApplication.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using BestApplication.Models.ConfigModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 namespace BestApplication
 {
     public class Startup
@@ -51,12 +56,29 @@ namespace BestApplication
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            services.AddAuthentication()
+           .AddFacebook(options =>
+           {
+               options.AppId = Configuration["FacebookId"];
+               options.AppSecret = Configuration["FacebookSecret"];
+           })
+           .AddGoogle(options =>
+           {
+               options.ClientId = Configuration["GoogleId"];
+               options.ClientSecret = Configuration["GoogleSecret"];
+           });
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/dang-nhap");
             services.AddSession();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddMvc(options =>
             {
                 options.SslPort = 44365;
                 options.Filters.Add(new RequireHttpsAttribute());
+            });
+            services.AddAuthentication(options => {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
             });
 
             // Add application services.
@@ -84,20 +106,8 @@ namespace BestApplication
             app.UseSession();
             app.UseStaticFiles();
 
-            app.UseIdentity();
+            app.UseAuthentication();
 
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
-            app.UseGoogleAuthentication(new GoogleOptions()
-            {
-                ClientId = Configuration["GoogleId"],
-                ClientSecret = Configuration["GoogleSecret"]
-            });
-            app.UseFacebookAuthentication(new FacebookOptions()
-            {
-                AppId = Configuration["FacebookId"],
-                AppSecret = Configuration["FacebookSecret"]
-            });
-      
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -11,14 +11,13 @@ namespace BestApplication
     public class Program
     {
         public static void Main(string[] args)
-        {
-            var a = new ConfigurationBuilder().AddCommandLine(args).Build();
+        {          
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseConfiguration(a)
+                .UseConfiguration(new ConfigurationBuilder().AddCommandLine(args).Build())
                 .Build();
 
             host.Run();

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using BestApplication.Models;
 using BestApplication.Models.ManageViewModels;
 using BestApplication.Services;
+using Microsoft.AspNetCore.Authentication;
 
 namespace BestApplication.Controllers
 {
@@ -18,41 +19,38 @@ namespace BestApplication.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly string _externalCookieScheme;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
         public ManageController(
-          UserManager<ApplicationUser> userManager,
-          SignInManager<ApplicationUser> signInManager,
-          IOptions<IdentityCookieOptions> identityCookieOptions,
-          IEmailSender emailSender,
-          ISmsSender smsSender,
-          ILoggerFactory loggerFactory)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IEmailSender emailSender,
+            ISmsSender smsSender,
+            ILoggerFactory loggerFactory)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
-            _logger = loggerFactory.CreateLogger<ManageController>();
+            _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
         //
         // GET: /Manage/Index
+        [Route("thong-tin-tai-khoan")]
         [HttpGet]
         public async Task<IActionResult> Index(ManageMessageId? message = null)
-        {
+        {           
             ViewData["StatusMessage"] =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                message == ManageMessageId.ChangePasswordSuccess ? "Mật khẩu của bạn đã thay đổi thành công."
+                : message == ManageMessageId.SetPasswordSuccess ? "Thiết lập mật khẩu thành công."
+                : message == ManageMessageId.SetTwoFactorSuccess ? "Bảo mật cấp 2 của bạn thiết lập thành công."
+                : message == ManageMessageId.Error ? "Có lỗi sảy ra."
+                : message == ManageMessageId.AddPhoneSuccess ? "Số điện thoại đã được cập nhật."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Xóa số điện thoại thành công."
                 : "";
-
             var user = await GetCurrentUserAsync();
             if (user == null)
             {
@@ -291,7 +289,8 @@ namespace BestApplication.Controllers
                 return View("Error");
             }
             var userLogins = await _userManager.GetLoginsAsync(user);
-            var otherLogins = _signInManager.GetExternalAuthenticationSchemes().Where(auth => userLogins.All(ul => auth.AuthenticationScheme != ul.LoginProvider)).ToList();
+            var schemes = await _signInManager.GetExternalAuthenticationSchemesAsync();
+            var otherLogins = schemes.Where(auth => userLogins.All(ul => auth.Name != ul.LoginProvider)).ToList();
             ViewData["ShowRemoveButton"] = user.PasswordHash != null || userLogins.Count > 1;
             return View(new ManageLoginsViewModel
             {
@@ -307,7 +306,7 @@ namespace BestApplication.Controllers
         public async Task<IActionResult> LinkLogin(string provider)
         {
             // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
             // Request a redirect to the external login provider to link a login for the current user
             var redirectUrl = Url.Action(nameof(LinkLoginCallback), "Manage");
@@ -336,7 +335,7 @@ namespace BestApplication.Controllers
             {
                 message = ManageMessageId.AddLoginSuccess;
                 // Clear the existing external cookie to ensure a clean login process
-                await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
+                await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
             }
             return RedirectToAction(nameof(ManageLogins), new { Message = message });
         }

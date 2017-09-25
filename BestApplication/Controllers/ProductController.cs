@@ -32,8 +32,7 @@ namespace BestApplication.Controllers
         [Route("them-moi-san-pham")]
         [Authorize(Roles = "Admin")]
         public IActionResult AddNew()
-        {
-            ViewData["TitleContent"] = "Thêm mới sản phẩm";
+        {        
             return View();
         }
 

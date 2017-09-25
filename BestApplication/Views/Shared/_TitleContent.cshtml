@@ -1,6 +1,13 @@
-<div class="content_top col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="heading">
-        <h3>@ViewData["TitleContent"]</h3>
+@if (ViewData["TitleContent"] != null)
+{
+    <div class="content_top col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="heading" style="display:flex;">
+            <button class="glyphicon glyphicon-chevron-left back-button" onclick="window.history.back()"></button>      
+            <div>
+                <h3>@ViewData["TitleContent"]</h3>
+            </div>
+        </div>
+        <div class="clear"></div>
     </div>
-    <div class="clear"></div>
-</div>
+}
+

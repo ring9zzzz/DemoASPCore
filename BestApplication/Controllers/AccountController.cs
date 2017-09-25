@@ -15,6 +15,7 @@ using BestApplication.Services;
 using BestApplication.Common.Const;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication;
 
 namespace BestApplication.Controllers
 {
@@ -25,13 +26,11 @@ namespace BestApplication.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
-        private readonly ILogger _logger;
-        private readonly string _externalCookieScheme;
+        private readonly ILogger _logger;     
         public IConfigurationRoot _configuration;
         public AccountController(
-            UserManager<ApplicationUser> userManager,
+             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
             ILoggerFactory loggerFactory
@@ -39,9 +38,8 @@ namespace BestApplication.Controllers
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
-            _smsSender = smsSender;       
+            _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
@@ -53,10 +51,9 @@ namespace BestApplication.Controllers
         public async Task<IActionResult> Login(string returnUrl = null)
         {
             // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.Authentication.SignOutAsync(_externalCookieScheme);
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            ViewData["ReturnUrl"] = returnUrl;
-            ViewData["TitleContent"] = "Đăng nhập";
+            ViewData["ReturnUrl"] = returnUrl;         
             return View();
         }
 
@@ -68,8 +65,7 @@ namespace BestApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            ViewData["TitleContent"] = "Đăng nhập";
+            ViewData["ReturnUrl"] = returnUrl;    
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
@@ -108,8 +104,7 @@ namespace BestApplication.Controllers
         [AllowAnonymous]
         public IActionResult Register(string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            ViewData["TitleContent"] = "Đăng ký dịch vụ";
+            ViewData["ReturnUrl"] = returnUrl;          
             return View();
         }
 
@@ -120,8 +115,7 @@ namespace BestApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            ViewData["TitleContent"] = "Đăng ký dịch vụ";
+            ViewData["ReturnUrl"] = returnUrl;      
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
@@ -159,7 +153,7 @@ namespace BestApplication.Controllers
 
         //
 
-   
+
         // POST: /Account/Logout
         [HttpGet]
         [Route("dang-xuat")]
@@ -250,7 +244,7 @@ namespace BestApplication.Controllers
                     {
                         ClearUserRole(user.Id);
                     }
-                    result = await _userManager.AddToRoleAsync(user,UserRoleCst.FreeUser);
+                    result = await _userManager.AddToRoleAsync(user, UserRoleCst.FreeUser);
                     if (result.Succeeded)
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
@@ -504,8 +498,9 @@ namespace BestApplication.Controllers
 
         public async void ClearUserRole(string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);     
-               await _userManager.RemoveFromRoleAsync(user, user.Roles.FirstOrDefault().RoleId);        
+            var user = await _userManager.FindByIdAsync(userId);
+            var role = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRoleAsync(user,role.FirstOrDefault());
         }
 
         public IActionResult RedirectToLocal(string returnUrl)

@@ -1,19 +1,11 @@
-﻿@using System.Collections.Generic
-@using Microsoft.AspNetCore.Http
-@using Microsoft.AspNetCore.Http.Authentication
-@model LoginViewModel
+﻿@model LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Đăng nhập";
+    ViewData["TitleContent"] = "Đăng nhập";
 }
 
-<div class="content_top col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div class="heading">
-        <h3>@ViewData["TitleContent"]</h3>
-    </div>
-    <div class="clear"></div>
-</div>
 <div class="content_middle col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="row">
         <div class="col-md-8">
@@ -69,7 +61,7 @@
             <h4>Sử dụng tài khoản mạng xã hội.</h4>
             <hr />
             @{
-                var loginProviders = SignInManager.GetExternalAuthenticationSchemes().ToList();
+                var loginProviders = SignInManager.GetExternalAuthenticationSchemesAsync().Result.ToList();
                 if (loginProviders.Count == 0)
                 {
                     <div>
@@ -86,13 +78,13 @@
                             <p>
                                 @foreach (var provider in loginProviders)
                                 {
-                                    if (provider.AuthenticationScheme == "Facebook")
+                                    if (provider.Name == "Facebook")
                                     {
-                                        <button type="submit" class="btn btn-facebook" style="width:45%" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account"><i class="fa fa-facebook-f pull-left" style="margin-top: 3px;"></i>Facebook</button>
+                                        <button type="submit" class="btn btn-facebook" style="width:45%" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fa fa-facebook-f pull-left" style="margin-top: 3px;"></i>Facebook</button>
                                     }
-                                    if (provider.AuthenticationScheme == "Google")
+                                    if (provider.Name == "Google")
                                     {
-                                        <button type="submit" class="btn btn-google" style="width:45%" name="provider" value="@provider.AuthenticationScheme" title="Log in using your @provider.DisplayName account"><i class="fa fa-google-plus  pull-left" style="margin-top: 3px;"></i>Google</button>
+                                        <button type="submit" class="btn btn-google" style="width:45%" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fa fa-google-plus  pull-left" style="margin-top: 3px;"></i>Google</button>
                                     }
 
                                 }
