@@ -7,8 +7,7 @@
 
 <div>
     <div class="content_middle col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="row">
-            <p class="text-success">@ViewData["StatusMessage"]</p>
+        <div class="row">       
             <dl class="dl-horizontal">
                 <dt>Password:</dt>
                 <dd>
@@ -22,9 +21,20 @@
                     }
                 </dd>
                 <dt>External Logins:</dt>
-                <dd>
+                <dd>                  
+                        @foreach (var item in Model.Logins)
+                        {
+                            if (item.LoginProvider == "Facebook")
+                            {
+                                <span class="btn btn-default fa fa-facebook-square"> @item.LoginProvider </span>
+                            }                        
+                            if (item.LoginProvider == "Google")
+                            {
+                                <span class="btn btn-default fa fa-google-plus-square">@item.LoginProvider </span>
+                            }
 
-                    @Model.Logins.Count <a asp-controller="Manage" asp-action="ManageLogins" class="btn-bracketed">Manage</a>
+                        }                  
+                     <a asp-controller="Manage" asp-action="ManageLogins" class="btn-bracketed">Manage</a>
                 </dd>
                 <dt>Phone Number:</dt>
                 <dd>

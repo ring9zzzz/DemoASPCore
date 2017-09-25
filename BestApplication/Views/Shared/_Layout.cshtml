@@ -32,8 +32,8 @@
 <body>
     @await Html.PartialAsync("_Header")
     <div class="body-content">
-        <div class="row">        
-                @await Html.PartialAsync("_Aside")
+        <div class="row">
+            @await Html.PartialAsync("_Aside")
             <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 no-padding">
                 @await Html.PartialAsync("_TitleContent")
                 @RenderBody()
@@ -42,11 +42,9 @@
         @await Html.PartialAsync("_Footer")
     </div>
     <a href="#" id="toTop"><span id="toTopHover"> </span></a>
+    <input value="@ViewData["StatusMessage"]" id="statusMessage" style="display:none" disabled>
     @await Html.PartialAsync("_ValidationScriptsPartial")
     <script type="text/javascript">
-
-
-
         $(document).ready(function () {
             $().UItoTop({ easingType: 'easeOutQuart' });
             $('#horizontalTab').easyResponsiveTabs({
@@ -72,38 +70,63 @@
         }
 
         $(function () {
-
-            var dd = new DropDown($('#dd'));    
+            if ($("#statusMessage").val() != null)
+            {
+                if ($(location).attr("href").includes("Error")) {
+                    $.notify("" + $("#statusMessage").val() + "", {
+                        className: 'error',
+                        clickToHide: false,
+                        autoHide: true,
+                        globalPosition: 'top right'
+                    });
+                } else { 
+                    $.notify("" + $("#statusMessage").val() + "", {
+                        className: 'success',
+                        clickToHide: false,
+                        autoHide: true,
+                        globalPosition: 'top right'
+                    });
+                }
+               
+            }
+            $(".back-button").on("click", function () {
+                if ($(location).attr("href").includes("Manage")) {
+                    window.location.assign("/thong-tin-tai-khoan");
+                } else {
+                    window.history.back();
+                }
+            });
+            var dd = new DropDown($('#dd'));
             $(document).click(function () {
                 // all dropdowns
                 $('.wrapper-dropdown-2').removeClass('active');
             });
 
         });
-          // Activate Carousel
-    $("#myCarousel").carousel();
-    
-    // Enable Carousel Indicators
-    $(".item1").click(function(){
-        $("#myCarousel").carousel(0);
-    });
-    $(".item2").click(function(){
-        $("#myCarousel").carousel(1);
-    });
-    $(".item3").click(function(){
-        $("#myCarousel").carousel(2);
-    });
-    $(".item4").click(function(){
-        $("#myCarousel").carousel(3);
-    });
-    
-    // Enable Carousel Controls
-    $(".left").click(function(){
-        $("#myCarousel").carousel("prev");
-    });
-    $(".right").click(function(){
-        $("#myCarousel").carousel("next");
-    });
+        // Activate Carousel
+        $("#myCarousel").carousel();
+
+        // Enable Carousel Indicators
+        $(".item1").click(function () {
+            $("#myCarousel").carousel(0);
+        });
+        $(".item2").click(function () {
+            $("#myCarousel").carousel(1);
+        });
+        $(".item3").click(function () {
+            $("#myCarousel").carousel(2);
+        });
+        $(".item4").click(function () {
+            $("#myCarousel").carousel(3);
+        });
+
+        // Enable Carousel Controls
+        $(".left").click(function () {
+            $("#myCarousel").carousel("prev");
+        });
+        $(".right").click(function () {
+            $("#myCarousel").carousel("next");
+        });
     </script>
     @RenderSection("Scripts", required: false)
 </body>

@@ -279,9 +279,9 @@ namespace BestApplication.Controllers
         public async Task<IActionResult> ManageLogins(ManageMessageId? message = null)
         {
             ViewData["StatusMessage"] =
-                message == ManageMessageId.RemoveLoginSuccess ? "The external login was removed."
-                : message == ManageMessageId.AddLoginSuccess ? "The external login was added."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                message == ManageMessageId.RemoveLoginSuccess ? "Đăng nhập ngoại tuyến đã được gỡ bỏ."
+                : message == ManageMessageId.AddLoginSuccess ? "Đăng nhập ngoại tuyến đã được thêm vào."
+                : message == ManageMessageId.Error ? "Có lỗi sảy ra."
                 : "";
             var user = await GetCurrentUserAsync();
             if (user == null)

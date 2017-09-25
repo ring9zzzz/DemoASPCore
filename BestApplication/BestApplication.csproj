@@ -13,6 +13,7 @@
     <UserSecretsId>aspnet-BestApplication-ee35c1ff-c28a-4da2-afd8-a65a2569d376</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="BuildBundlerMinifier" Version="2.5.357" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
@@ -27,6 +28,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BestApplication.Common\BestApplication.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="bundleconfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Update="Microsoft.NETCore.App" Version="2.0.0" />

@@ -7,10 +7,9 @@
 
 <div class="content_middle col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="row">
-        <p class="text-success">@ViewData["StatusMessage"]</p>
         @if (Model.CurrentLogins.Count > 0)
             {
-            <h4>Registered Logins</h4>
+            <h4>Phương thức đăng nhập đã sử dụng</h4>
                 <table class="table">
                     <tbody>
                         @for (var index = 0; index < Model.CurrentLogins.Count; index++)
@@ -24,7 +23,7 @@
                                             <div>
                                                 <input asp-for="@Model.CurrentLogins[index].LoginProvider" name="LoginProvider" type="hidden" />
                                                 <input asp-for="@Model.CurrentLogins[index].ProviderKey" name="ProviderKey" type="hidden" />
-                                                <input type="submit" class="btn btn-default" value="Remove" title="Remove this @Model.CurrentLogins[index].LoginProvider login from your account" />
+                                                <button type="submit" class="no-border no-background-color" title="Gỡ bỏ @Model.CurrentLogins[index].LoginProvider đăng nhập từ tài khoản của bạn"><span class="fa fa-times"></span></button>
                                             </div>
                                         </form>
                                     }

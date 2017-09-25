@@ -6,3 +6,6 @@
     /* line-height: 0px; */
     padding-left: 0px;
 }
+.no-background-color {
+    background-color: Transparent!important;
+}
