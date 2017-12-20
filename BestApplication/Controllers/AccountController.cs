@@ -113,6 +113,7 @@ namespace BestApplication.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Route("dang-ky-dich-vu")]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;      
@@ -268,7 +269,12 @@ namespace BestApplication.Controllers
             {
                 return View("Error");
             }
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);    
+            var checkExist = _userManager.GetRolesAsync(user);
+            if (checkExist.Result.Count > 0)
+            {
+                ClearUserRole(user.Id);
+            }       
             if (user == null)
             {
                 return View("Error");

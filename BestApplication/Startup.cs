@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore.Design;
+using System.IO;
 
 namespace BestApplication
 {
@@ -46,7 +48,7 @@ namespace BestApplication
         {
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<StoreOfficeContext>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("StoreConnection")));
 
@@ -114,6 +116,34 @@ namespace BestApplication
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+        public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>
+        { 
+            public ApplicationDbContext CreateDbContext(string[] args)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json")
+                    .Build();
+                var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                builder.UseSqlServer(connectionString);
+                return new ApplicationDbContext(builder.Options);
+            }
+        }
+        public class DesignStoreOfficeDbContextFactory : IDesignTimeDbContextFactory<StoreOfficeContext>
+        {
+            public StoreOfficeContext CreateDbContext(string[] args)
+            {
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json")
+                    .Build();
+                var builder = new DbContextOptionsBuilder<StoreOfficeContext>();
+                var connectionString = configuration.GetConnectionString("StoreConnection");
+                builder.UseSqlServer(connectionString);
+                return new StoreOfficeContext(builder.Options);
+            }
         }
     }
 }

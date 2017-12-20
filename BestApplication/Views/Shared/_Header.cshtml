@@ -10,7 +10,7 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     //var Role = UserManager.GetRolesAsync(UserManager.GetUserAsync(this.User).Result).Result;
-                    if (@HttpContextAccessor.HttpContext.User.IsInRole(UserRoleCst.Admin))
+                    if (@HttpContextAccessor.HttpContext.User.IsInRole(UserRoleCst.AdminName))
                     {
                         <li><a href="/them-moi-san-pham">Thêm mới sản phẩm</a></li>
                     }
