@@ -11,6 +11,7 @@
 
   <PropertyGroup>
     <UserSecretsId>aspnet-BestApplication-ee35c1ff-c28a-4da2-afd8-a65a2569d376</UserSecretsId>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.362" />

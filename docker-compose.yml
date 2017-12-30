@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  bestapplication:
+    image: bestapplication
+    build:
+      context: .
+      dockerfile: BestApplication\Dockerfile
